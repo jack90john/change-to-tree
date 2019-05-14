@@ -75,7 +75,7 @@ public class ChangeToTree {
 
     @SuppressWarnings("unchecked")
     public <T> List<FormatData> formatData(List<T> tList, String idName, String parentIdName, String... dataNames) {
-        List<FormatData> collect = tList.stream()
+        return tList.stream()
                 .map(t -> {
                     FormatData formatData = new FormatData();
                     try {
@@ -104,16 +104,11 @@ public class ChangeToTree {
                             formatData.setData(dataMethod.invoke(t));
                         }
 
-                    } catch (NoSuchMethodException e) {
-                        e.printStackTrace();
-                    } catch (IllegalAccessException e) {
-                        e.printStackTrace();
-                    } catch (InvocationTargetException e) {
+                    } catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException e) {
                         e.printStackTrace();
                     }
                     return formatData;
                 })
                 .collect(Collectors.toList());
-        return collect;
     }
 }
