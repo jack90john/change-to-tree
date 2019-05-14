@@ -1,5 +1,3 @@
-package com.szl.syj.cd.comm;
-
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import dto.DataTest;
@@ -41,7 +39,7 @@ public class ChangeToTree {
             list.add(dataTest);
         }
         ChangeToTree test = new ChangeToTree();
-        List<FormatData<DataTest>> formatData = test.formatData(list, "id", "parentId", "testData");
+        List<FormatData> formatData = test.formatData(list, "id", "parentId", "testData");
         System.out.println(test.changeToTree(formatData));
     }
 
@@ -50,7 +48,8 @@ public class ChangeToTree {
     }
 
 
-    public <T> String changeToTree(List<FormatData<T>> formatDataList) {
+    @SuppressWarnings("unchecked")
+    public String changeToTree(List<FormatData> formatDataList) {
         //取出每个地址Id
         Map<String, FormatData> ids = formatDataList.parallelStream()
                 .collect(Collectors.groupingBy(FormatData::getId,
@@ -75,8 +74,8 @@ public class ChangeToTree {
     }
 
     @SuppressWarnings("unchecked")
-    public <T> List<FormatData<T>> formatData(List<T> tList, String idName, String parentIdName, String... dataNames) {
-        return tList.stream()
+    public <T> List<FormatData> formatData(List<T> tList, String idName, String parentIdName, String... dataNames) {
+        List<FormatData> collect = tList.stream()
                 .map(t -> {
                     FormatData formatData = new FormatData();
                     try {
@@ -115,8 +114,6 @@ public class ChangeToTree {
                     return formatData;
                 })
                 .collect(Collectors.toList());
+        return collect;
     }
 }
-
-
-
